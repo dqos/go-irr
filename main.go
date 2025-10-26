@@ -87,17 +87,32 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	// If it isn't, look it up using bgpq4 and cache the result
 	// Optional cache bypass
 	output := cache.get(vendor, addrFamily, asnOrAsSet)
+	bypassRaw := q.Get("bypassCache")
+	bypass := bypassRaw == "1" || strings.EqualFold(bypassRaw, "true") || strings.EqualFold(bypassRaw, "yes")
 
-	if output == "" || q.Get("bypassCache") == "1" || q.Get("bypassCache") == "true" {
-		output = queryBgpq4(vendor, addrFamily, asnOrAsSet)
+	if output == "" || bypass {
+		queried := strings.TrimSpace(queryBgpq4(vendor, addrFamily, asnOrAsSet))
 
-		if output == "" {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Internal Server Error"))
-			return
+		if queried == "" {
+			if vendor == "bird" {
+				// bird expects an empty array rather than a failure
+				output = "NN = [];\n"
+			} else {
+				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+				return
+			}
+		} else {
+			output = queried
+			// keep a trailing newline for compatibility with existing callers
+			if !strings.HasSuffix(output, "\n") {
+				output += "\n"
+			}
 		}
 
-		cache.set(vendor, addrFamily, asnOrAsSet, output)
+		// don't overwrite the cache when the request explicitly bypassed it
+		if !bypass {
+			cache.set(vendor, addrFamily, asnOrAsSet, output)
+		}
 	}
 
 	if q.Has("name") {
