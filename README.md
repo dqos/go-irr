@@ -10,15 +10,30 @@ GET /routeros/addressfamily/ASorAS-SET?name=myprefixlist
 ```
 
 ## Config
+### Configuration options
 
-SOURCES = What gets passed to the -S field in bgpq4, default is NTTCOM,INTERNAL,LACNIC,RADB,RIPE,RIPE-NONAUTH,ALTDB,BELL,LEVEL3,APNIC,JPIRR,ARIN,BBOI,TC,AFRINIC,IDNIC,RPKI,REGISTROBR,CANARIE
-MATCH_PARENT = If bgpq4 should match parent prefixes, not just the exact route object (enabled by default)
-LISTEN = What go-irr should listen to (default [::]:8080)
-CACHE_TIME = How long go-irr should cache prefixes for (default 1 hour)
-ALLOW_CACHE_BYPASS = If the "bypassCache" query parameter is allowed
-ALLOW_CACHE_CLEAR = If global cache is allowed to be cleared with a request to /clearCache
+- `SOURCES`  
+    What gets passed to bgpq4's `-S` field. Default:
+    `NTTCOM,INTERNAL,LACNIC,RADB,RIPE,RIPE-NONAUTH,ALTDB,BELL,LEVEL3,APNIC,JPIRR,ARIN,BBOI,TC,AFRINIC,IDNIC,RPKI,REGISTROBR,CANARIE`
 
-### Examples:
+- `MATCH_PARENT`  
+    If bgpq4 should match parent prefixes (not just the exact route object). Enabled by default.
+
+- `LISTEN`  
+    Address and port go-irr should bind to. Default: `[::]:8080`
+
+- `CACHE_TIME`  
+    How long go-irr should cache prefix results. Default: `1h`. Accepts a sequence of decimal numbers, each with an optional fraction and a unit suffix (examples: `300ms`, `1.5h`, `2h45m`). 
+    
+    Valid units: `ns`, `us` (or `µs`), `ms`, `s`, `m`, `h`.
+
+- `ALLOW_CACHE_BYPASS`  
+    Allow the `bypassCache` query parameter to bypass the cache (enable to permit cache bypass).
+
+- `ALLOW_CACHE_CLEAR`  
+    Allow clearing the global cache via a request to `/clearCache` (enable to permit remote cache clears).
+
+## Usage examples:
 
 ```
 GET /arista/v4/AS208453
