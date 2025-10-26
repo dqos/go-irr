@@ -26,7 +26,7 @@ func loadConfig(cfg *config) {
 		})
 
 	cfg.matchParent = parseEnv("MATCH_PARENT", true, func(s string) bool {
-		matched, _ := regexp.MatchString("true|1|y(es)?", s)
+		matched, _ := regexp.MatchString("true|1|y(es)?", strings.ToLower(s))
 		return matched
 	})
 
@@ -38,12 +38,12 @@ func loadConfig(cfg *config) {
 	})
 
 	cfg.allowCacheBypass = parseEnv("ALLOW_CACHE_BYPASS", false, func(s string) bool {
-		matched, _ := regexp.MatchString("true|1|y(es)?", s)
+		matched, _ := regexp.MatchString("true|1|y(es)?", strings.ToLower(s))
 		return matched
 	})
 
 	cfg.allowCacheClear = parseEnv("ALLOW_CACHE_CLEAR", false, func(s string) bool {
-		matched, _ := regexp.MatchString("true|1|y(es)?", s)
+		matched, _ := regexp.MatchString("true|1|y(es)?", strings.ToLower(s))
 		return matched
 	})
 
