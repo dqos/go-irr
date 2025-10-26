@@ -76,7 +76,7 @@ func stripHeadersForEos(prefixList string) string {
 	output := skipLines(prefixList, 2)
 
 	if strings.Contains(output, "deny") {
-		output = skipLines(prefixList, 1)
+		output = skipLines(output, 1)
 	}
 
 	return output
