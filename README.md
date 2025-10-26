@@ -28,10 +28,14 @@ GET /routeros/addressfamily/ASorAS-SET?name=myprefixlist
     Valid units: `ns`, `us` (or `µs`), `ms`, `s`, `m`, `h`.
 
 - `ALLOW_CACHE_BYPASS`  
-    Allow the `bypassCache` query parameter to bypass the cache (enable to permit cache bypass).
+    Allow the `bypassCache` query parameter to bypass cached results. Disabled by default.
+
+    Accepts boolean-like values (case-insensitive): `true`, `yes`, `y`, `1`
 
 - `ALLOW_CACHE_CLEAR`  
-    Allow clearing the global cache via a request to `/clearCache` (enable to permit remote cache clears).
+    Allow clearing the global cache via a request to `/clearCache`. Disabled by default.
+
+    Accepts boolean-like values (case-insensitive): `true`, `yes`, `y`, `1`
 
 ## Usage examples:
 
