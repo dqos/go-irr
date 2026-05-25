@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"regexp"
@@ -97,6 +98,8 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	copy(sortedSources, sources)
 	sort.Strings(sortedSources)
 	sourcesKey := strings.Join(sortedSources, ",")
+
+	fmt.Printf("sources=%s\n", sourcesKey)
 
 	// Check if the prefix list is already cached
 	// If it isn't, look it up using bgpq4 and cache the result

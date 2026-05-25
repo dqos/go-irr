@@ -61,6 +61,6 @@ func loggingMiddleware(next http.Handler) http.Handler {
 		}
 		src := getSourceIP(r)
 		// log timestamp, status, source IP, path and request duration
-		fmt.Printf("%s status=%d src=%s path=%s duration=%s\n", time.Now().Format(time.RFC3339), status, src, r.URL.Path, elapsed)
+		fmt.Printf("%s status=%d src=%s uri=%s duration=%s\n", time.Now().Format(time.RFC3339), status, src, r.URL.RequestURI(), elapsed)
 	})
 }
