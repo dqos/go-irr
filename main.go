@@ -87,10 +87,19 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	// Determine sources: per-request override takes priority over config default
 	sources := conf.sources
 	if sourcesParam := q.Get("sources"); sourcesParam != "" {
-		sources = strings.Split(strings.ReplaceAll(sourcesParam, " ", ""), ",")
-		for i, s := range sources {
-			sources[i] = strings.ToUpper(s)
+		if !conf.allowSourceOverride {
+			w.WriteHeader(http.StatusForbidden)
+			return
 		}
+		requested := strings.Split(strings.ReplaceAll(sourcesParam, " ", ""), ",")
+		for i, s := range requested {
+			requested[i] = strings.ToUpper(s)
+			if _, ok := ValidSources[requested[i]]; !ok {
+				http.Error(w, "unknown source: "+requested[i], http.StatusBadRequest)
+				return
+			}
+		}
+		sources = requested
 	}
 	// Sort sources so cache key is order-independent
 	sortedSources := make([]string, len(sources))

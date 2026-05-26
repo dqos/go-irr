@@ -6,6 +6,30 @@ import (
 	"strings"
 )
 
+// ValidSources is the set of IRR databases bgpq4 knows about.
+var ValidSources = map[string]struct{}{
+	"AFRINIC":     {},
+	"ALTDB":       {},
+	"APNIC":       {},
+	"ARIN":        {},
+	"ARIN-NONAUTH": {},
+	"BBOI":        {},
+	"BELL":        {},
+	"CANARIE":     {},
+	"IDNIC":       {},
+	"INTERNAL":    {},
+	"JPIRR":       {},
+	"LACNIC":      {},
+	"LEVEL3":      {},
+	"NTTCOM":      {},
+	"RADB":        {},
+	"REGISTROBR":  {},
+	"RIPE":        {},
+	"RIPE-NONAUTH": {},
+	"RPKI":        {},
+	"TC":          {},
+}
+
 var vendorShorthands = map[string]string{
 	"arista":    "e",
 	"eos":       "e",
